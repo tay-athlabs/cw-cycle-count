@@ -4,10 +4,10 @@
 Internal inventory cycle count tool for CoreWeave European DC operations.
 
 ## Status
-Frontend prototype v0.1 — backend integration pending IT approval.
+Frontend prototype v0.1 , backend integration pending IT approval.
 
 ## Features
-- CWPN (CoreWeave Part Number) system — 9-digit fixed format
+- CWPN (CoreWeave Part Number) system , 9-digit fixed format
 - NetSuite ID mapping for export compatibility
 - Daily / Weekly / Full count session types
 - Serial-tracked and quantity-only item support
