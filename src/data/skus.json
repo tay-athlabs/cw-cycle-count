@@ -1,0 +1,155 @@
+[
+  {
+    "cwpn": "010010001",
+    "nsItemId": "1062833700",
+    "nsDesc": "",
+    "desc": "GB200 NVL72 rack unit",
+    "category": "01",
+    "typeName": "Compute — GB200",
+    "serialTracked": true,
+    "status": "active",
+    "flagged": false,
+    "inventory": {
+      "AMS01": { "daily": 0, "excess": 2, "critical": 4, "rma": 1, "quarantine": 0 },
+      "LHR02": { "daily": 0, "excess": 1, "critical": 3, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 0, "excess": 0, "critical": 2, "rma": 0, "quarantine": 0 },
+      "MAD04": { "daily": 0, "excess": 1, "critical": 2, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "010020001",
+    "nsItemId": "1062833701",
+    "nsDesc": "",
+    "desc": "GB300 NVL72 rack unit",
+    "category": "01",
+    "typeName": "Compute — GB300",
+    "serialTracked": true,
+    "status": "active",
+    "flagged": false,
+    "inventory": {
+      "AMS01": { "daily": 0, "excess": 1, "critical": 3, "rma": 0, "quarantine": 1 },
+      "LHR02": { "daily": 0, "excess": 0, "critical": 2, "rma": 1, "quarantine": 0 },
+      "FRA03": { "daily": 0, "excess": 1, "critical": 2, "rma": 0, "quarantine": 0 },
+      "MAD04": { "daily": 0, "excess": 0, "critical": 1, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "030010001",
+    "nsItemId": "1834560280",
+    "nsDesc": "",
+    "desc": "100G QSFP28 SR4 optical module",
+    "category": "03",
+    "typeName": "Optics — 100G SR4",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": true,
+    "inventory": {
+      "AMS01": { "daily": 8,  "excess": 24, "critical": 6, "rma": 0, "quarantine": 0 },
+      "LHR02": { "daily": 6,  "excess": 18, "critical": 4, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 4,  "excess": 12, "critical": 4, "rma": 2, "quarantine": 0 },
+      "MAD04": { "daily": 4,  "excess": 8,  "critical": 2, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "030020001",
+    "nsItemId": "1834560282",
+    "nsDesc": "",
+    "desc": "400G QSFP-DD DR4 optical module",
+    "category": "03",
+    "typeName": "Optics — 400G DR4",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": true,
+    "inventory": {
+      "AMS01": { "daily": 2,  "excess": 4,  "critical": 6, "rma": 0, "quarantine": 0 },
+      "LHR02": { "daily": 2,  "excess": 4,  "critical": 4, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 2,  "excess": 2,  "critical": 4, "rma": 0, "quarantine": 0 },
+      "MAD04": { "daily": 0,  "excess": 2,  "critical": 2, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "030030001",
+    "nsItemId": "1834560290",
+    "nsDesc": "",
+    "desc": "10G SFP+ LR single-mode 10km",
+    "category": "03",
+    "typeName": "Optics — 10G LR",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": true,
+    "inventory": {
+      "AMS01": { "daily": 18, "excess": 6,  "critical": 4, "rma": 0, "quarantine": 0 },
+      "LHR02": { "daily": 12, "excess": 6,  "critical": 4, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 10, "excess": 4,  "critical": 2, "rma": 1, "quarantine": 0 },
+      "MAD04": { "daily": 8,  "excess": 4,  "critical": 2, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "040010001",
+    "nsItemId": "1834560292",
+    "nsDesc": "",
+    "desc": "10G SFP+ DAC cable 3m",
+    "category": "04",
+    "typeName": "Cable — DAC 10G 3m",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": true,
+    "inventory": {
+      "AMS01": { "daily": 40, "excess": 20, "critical": 0, "rma": 0, "quarantine": 0 },
+      "LHR02": { "daily": 30, "excess": 15, "critical": 0, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 25, "excess": 10, "critical": 0, "rma": 2, "quarantine": 0 },
+      "MAD04": { "daily": 20, "excess": 10, "critical": 0, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "040020001",
+    "nsItemId": "1834560293",
+    "nsDesc": "",
+    "desc": "AOC 8x LC 100G 10m",
+    "category": "04",
+    "typeName": "Cable — AOC 100G",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": true,
+    "inventory": {
+      "AMS01": { "daily": 4,  "excess": 12, "critical": 0, "rma": 2, "quarantine": 0 },
+      "LHR02": { "daily": 4,  "excess": 8,  "critical": 0, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 2,  "excess": 6,  "critical": 0, "rma": 1, "quarantine": 0 },
+      "MAD04": { "daily": 2,  "excess": 4,  "critical": 0, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "050010001",
+    "nsItemId": "1834560298",
+    "nsDesc": "",
+    "desc": "NVMe SSD 3.84TB U.2 enterprise",
+    "category": "05",
+    "typeName": "Storage — NVMe U.2",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": true,
+    "inventory": {
+      "AMS01": { "daily": 22, "excess": 10, "critical": 5, "rma": 1, "quarantine": 0 },
+      "LHR02": { "daily": 16, "excess": 8,  "critical": 4, "rma": 0, "quarantine": 0 },
+      "FRA03": { "daily": 12, "excess": 6,  "critical": 4, "rma": 1, "quarantine": 0 },
+      "MAD04": { "daily": 10, "excess": 4,  "critical": 2, "rma": 0, "quarantine": 0 }
+    }
+  },
+  {
+    "cwpn": "060010001",
+    "nsItemId": "1062833750",
+    "nsDesc": "PSU 2KW",
+    "desc": "PSU 2000W redundant hotswap",
+    "category": "06",
+    "typeName": "Power — PSU 2kW",
+    "serialTracked": false,
+    "status": "active",
+    "flagged": false,
+    "inventory": {
+      "AMS01": { "daily": 14, "excess": 8,  "critical": 4, "rma": 3, "quarantine": 0 },
+      "LHR02": { "daily": 10, "excess": 6,  "critical": 4, "rma": 1, "quarantine": 0 },
+      "FRA03": { "daily": 8,  "excess": 4,  "critical": 2, "rma": 2, "quarantine": 0 },
+      "MAD04": { "daily": 6,  "excess": 4,  "critical": 2, "rma": 0, "quarantine": 0 }
+    }
+  }
+]
