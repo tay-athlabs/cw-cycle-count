@@ -1,0 +1,72 @@
+"name": "LHR02",
+    "city": "London",
+    "country": "GB",
+    "region": "EU-West",
+    "timezone": "Europe/London",
+    "active": true,
+    "countFrequency": {
+      "daily": ["daily"],
+      "weekly": ["daily", "excess", "critical"],
+      "full": ["daily", "excess", "critical", "rma", "quarantine"]
+    },
+    "rooms": [
+      {
+        "id": "ROOM-A",
+        "name": "Room A — Main floor",
+        "sections": ["daily", "excess", "critical"]
+      },
+      {
+        "id": "ROOM-B",
+        "name": "Room B — RMA staging",
+        "sections": ["rma", "quarantine"]
+      }
+    ]
+  },
+  {
+    "id": "FRA03",
+    "name": "FRA03",
+    "city": "Frankfurt",
+    "country": "DE",
+    "region": "EU-Central",
+    "timezone": "Europe/Berlin",
+    "active": true,
+    "countFrequency": {
+      "daily": ["daily"],
+      "weekly": ["daily", "excess", "critical"],
+      "full": ["daily", "excess", "critical", "rma", "quarantine"]
+    },
+    "rooms": [
+      {
+        "id": "ROOM-A",
+        "name": "Room A — Main floor",
+        "sections": ["daily", "excess", "critical"]
+      },
+      {
+        "id": "ROOM-B",
+        "name": "Room B — RMA staging",
+        "sections": ["rma", "quarantine"]
+      }
+    ]
+  },
+  {
+    "id": "MAD04",
+    "name": "MAD04",
+    "city": "Madrid",
+    "country": "ES",
+    "region": "EU-South",
+    "timezone": "Europe/Madrid",
+    "active": true,
+    "countFrequency": {
+      "daily": ["daily"],
+      "weekly": ["daily", "excess", "critical"],
+      "full": ["daily", "excess", "critical", "rma", "quarantine"]
+    },
+    "rooms": [
+      {
+        "id": "ROOM-A",
+        "name": "Room A — Main floor",
+        "sections": ["daily", "excess", "critical", "rma", "quarantine"]
+      }
+    ]
+  }
+]
