@@ -1,7 +1,7 @@
 /**
  * useSession.js
  * All session lifecycle operations — create, load, update, claim,
- * complete, approve. Components stay clean.
+ * complete, approve, recount, escalate. With scheduling + duration metrics.
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react'
@@ -12,11 +12,21 @@ import {
   updateSession,
   completeSession,
   approveSession,
+  rejectSession,
   claimSection,
   updateSectionItems,
+  requestRecount as requestRecountService,
+  submitRecount as submitRecountService,
+  escalateItem as escalateItemService,
+  resolveEscalation as resolveEscalationService,
 } from '../services/dataService'
 import { useAppContext } from '../context/AppContext'
 import { useAuth } from '../context/AuthContext'
+import {
+  COUNT_TYPE,
+  getBinsForCountType,
+  POLL_INTERVAL_MS,
+} from '../constants'
 
 // ── All sessions (for History + Overview) ────────────────────────
 export function useSessionList(siteId) {
@@ -73,17 +83,15 @@ export function useSession(sessionId) {
     return () => { if (pollRef.current) clearInterval(pollRef.current) }
   }, [sessionId, sessionCache, fetch])
 
-  // Collaborative sessions poll for updates every 30s
   const startPolling = useCallback(() => {
     if (pollRef.current) clearInterval(pollRef.current)
-    pollRef.current = setInterval(fetch, 30000)
+    pollRef.current = setInterval(fetch, POLL_INTERVAL_MS)
   }, [fetch])
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) clearInterval(pollRef.current)
   }, [])
 
-  // Claim a section for this user
   const claim = useCallback(async (sectionKey) => {
     try {
       setSaving(true)
@@ -93,7 +101,7 @@ export function useSession(sessionId) {
       })
       setSession(updated)
       cacheSession(updated)
-      showToast(`Section claimed — ${sectionKey}`, 'success')
+      showToast(`Section claimed: ${sectionKey}`, 'success')
     } catch (err) {
       showToast(err.message, 'error')
     } finally {
@@ -101,7 +109,6 @@ export function useSession(sessionId) {
     }
   }, [sessionId, user, cacheSession, showToast])
 
-  // Save item counts for a section
   const saveItems = useCallback(async (sectionKey, items) => {
     try {
       setSaving(true)
@@ -115,7 +122,6 @@ export function useSession(sessionId) {
     }
   }, [sessionId, cacheSession, showToast])
 
-  // Mark section complete
   const completeSection = useCallback(async (sectionKey) => {
     if (!session) return
     const updated = {
@@ -142,7 +148,6 @@ export function useSession(sessionId) {
     }
   }, [session, sessionId, cacheSession, showToast])
 
-  // Submit entire session for review
   const submit = useCallback(async () => {
     try {
       setSaving(true)
@@ -158,7 +163,6 @@ export function useSession(sessionId) {
     }
   }, [sessionId, user, cacheSession, invalidateSession, showToast])
 
-  // Approve session (manager role)
   const approve = useCallback(async () => {
     try {
       setSaving(true)
@@ -173,19 +177,104 @@ export function useSession(sessionId) {
     }
   }, [sessionId, user, cacheSession, showToast])
 
+  // ── Recount operations ─────────────────────────────────────────
+
+  const requestRecount = useCallback(async (sectionKey, cwpn) => {
+    try {
+      setSaving(true)
+      const updated = await requestRecountService(sessionId, sectionKey, cwpn, {
+        email: user.email,
+        name: user.name,
+      })
+      setSession(updated)
+      cacheSession(updated)
+      showToast('Recount requested. A different technician must perform the recount.', 'warning')
+    } catch (err) {
+      showToast(`Recount request failed: ${err.message}`, 'error')
+    } finally {
+      setSaving(false)
+    }
+  }, [sessionId, user, cacheSession, showToast])
+
+  const submitRecount = useCallback(async (sectionKey, cwpn, newCount) => {
+    try {
+      setSaving(true)
+      const updated = await submitRecountService(sessionId, sectionKey, cwpn, newCount, {
+        email: user.email,
+        name: user.name,
+      })
+      setSession(updated)
+      cacheSession(updated)
+      const item = Object.values(updated.sections || {})
+        .flatMap(s => s.items || [])
+        .find(i => i.cwpn === cwpn)
+      if (item?.variance === 0) {
+        showToast('Recount matched. Variance resolved.', 'success')
+      } else {
+        showToast(`Recount complete. Variance: ${item?.variance > 0 ? '+' : ''}${item?.variance}`, 'warning')
+      }
+    } catch (err) {
+      showToast(`Recount failed: ${err.message}`, 'error')
+    } finally {
+      setSaving(false)
+    }
+  }, [sessionId, user, cacheSession, showToast])
+
+  const escalateItem = useCallback(async (sectionKey, cwpn) => {
+    try {
+      setSaving(true)
+      const updated = await escalateItemService(sessionId, sectionKey, cwpn, {
+        email: user.email,
+        name: user.name,
+      }, 'Variance persists after maximum recounts')
+      setSession(updated)
+      cacheSession(updated)
+      showToast('Item escalated to manager for investigation', 'warning')
+    } catch (err) {
+      showToast(`Escalation failed: ${err.message}`, 'error')
+    } finally {
+      setSaving(false)
+    }
+  }, [sessionId, user, cacheSession, showToast])
+
+  const reject = useCallback(async (reason) => {
+    try {
+      setSaving(true)
+      const updated = await rejectSession(sessionId, { email: user.email, name: user.name }, reason)
+      setSession(updated)
+      cacheSession(updated)
+      invalidateSession(sessionId)
+      showToast('Session returned for re-count', 'warning')
+    } catch (err) {
+      showToast(`Reject failed: ${err.message}`, 'error')
+    } finally {
+      setSaving(false)
+    }
+  }, [sessionId, user, cacheSession, invalidateSession, showToast])
+
+  const resolveEscalation = useCallback(async (sectionKey, cwpn, resolution) => {
+    try {
+      setSaving(true)
+      const updated = await resolveEscalationService(sessionId, sectionKey, cwpn, resolution, {
+        email: user.email,
+        name: user.name,
+      })
+      setSession(updated)
+      cacheSession(updated)
+      showToast('Escalation resolved', 'success')
+    } catch (err) {
+      showToast(`Resolution failed: ${err.message}`, 'error')
+    } finally {
+      setSaving(false)
+    }
+  }, [sessionId, user, cacheSession, showToast])
+
   return {
-    session,
-    loading,
-    saving,
-    error,
-    refetch: fetch,
-    claim,
-    saveItems,
-    completeSection,
-    submit,
-    approve,
-    startPolling,
-    stopPolling,
+    session, loading, saving, error,
+    refetch: fetch, claim, saveItems,
+    completeSection, submit, approve, reject,
+    requestRecount, submitRecount, escalateItem, resolveEscalation,
+    startPolling, stopPolling,
   }
 }
 
@@ -219,11 +308,13 @@ export function useCreateSession() {
 // ── Build empty section structure from config ─────────────────────
 function buildInitialSections(config) {
   const sections = {}
-  const sectionKeys = getSectionKeysForType(config.type)
+  const sectionKeys = getSectionKeysForConfig(config)
   sectionKeys.forEach(key => {
     sections[key] = {
       status: 'open',
-      claimedBy: config.collaborative ? null : { email: config.createdBy?.email, name: config.createdBy?.name },
+      claimedBy: config.collaborative
+        ? null
+        : { email: config.createdBy?.email, name: config.createdBy?.name },
       claimedAt: config.collaborative ? null : new Date().toISOString(),
       items: [],
     }
@@ -231,11 +322,9 @@ function buildInitialSections(config) {
   return sections
 }
 
-export function getSectionKeysForType(type) {
-  const map = {
-    daily:  ['daily'],
-    weekly: ['daily', 'excess', 'critical'],
-    full:   ['daily', 'excess', 'critical', 'rma', 'quarantine'],
+export function getSectionKeysForConfig(config) {
+  if (config.type === COUNT_TYPE.CUSTOM && config.customBins?.length) {
+    return config.customBins
   }
-  return map[type] || ['daily']
+  return getBinsForCountType(config.type, config.siteBins)
 }
